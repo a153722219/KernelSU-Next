@@ -15,6 +15,8 @@
 
 // https://github.com/fuqiuluo/ovo/blob/f7da411458e87d32438dc14fce5a3313ed0c967e/ovo/mmuhack.c#L21
 
+#define copy_to_kernel_nofault(dst, src, len) probe_kernel_write(dst, src, len)
+
 // Translate a kernel virtual address to a physical address by walking the
 // init_mm page tables. Returns the physical address on success, or writes
 // a non-zero error to *err. Callers must check *err before using the result,
