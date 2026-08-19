@@ -28,6 +28,17 @@
 #endif
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 0)
+static inline ssize_t strscpy_pad(char *dest, const char *src, size_t count)
+{
+    ssize_t ret = strscpy(dest, src, count);
+    if (ret >= 0 && ret < count) {
+        memset(dest + ret, 0, count - ret);
+    }
+    return ret;
+}
+#endif
+
 extern struct file *ksu_filp_open_compat(const char *filename, int flags,
 					 umode_t mode);
 extern ssize_t ksu_kernel_read_compat(struct file *p, void *buf, size_t count,
