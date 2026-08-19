@@ -31,6 +31,15 @@
 
 bool ksu_su_compat_enabled __read_mostly = true;
 
+static inline long strncpy_from_user_nofault(char *dst, const char __user *src, long count)
+{
+    long ret;
+    if (copy_from_user(dst, src, count))
+        return -EFAULT;
+    dst[count - 1] = '\0';
+    return strnlen(dst, count);
+}
+
 static int su_compat_feature_get(u64 *value)
 {
 	*value = ksu_su_compat_enabled ? 1 : 0;
